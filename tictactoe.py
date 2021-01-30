@@ -45,10 +45,7 @@ def playGame():
 
                 board[int(playerInput)-1] = currentPlayer(num)
             else:
-                playerInput = rd.randint(0, 8)
-                while board[playerInput] != "-":
-                    playerInput = rd.randint(0, 8)
-                board[playerInput] = currentPlayer(num)
+                board[computerMove()] = currentPlayer(num)
                 print("Computer's Turn")
                 print()
         elif toPlay.capitalize() == "N":
@@ -58,14 +55,14 @@ def playGame():
             while playerInput not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 playerInput = input("Invalid Input. Enter Position from 1-9 : ")
             while board[int(playerInput)-1] != "-":
-                playerInput = input("Position already occupied. Choose a new one from 1-9   : ")
+                playerInput = input("Position already occupied. Choose a new one from 1-9 : ")
             board[int(playerInput)-1] = currentPlayer(num)
         else:
             print("Invalid Input. Try again !")
             break
 
         displayBoard()
-        if checkGameOver():
+        if checkGameOver(board):
             print()
             print("Game Over :)")
             print(f'Winner is : {winner}')
@@ -78,40 +75,73 @@ def playGame():
             print()
         num += 1
 
-def checkGameOver():
-    return checkWinner()
+def checkGameOver(boards):
+    return checkWinner(boards)
 
-def checkWinner():
+def checkWinner(boards):
 
     global winner
 
-    if rowWinner():
-        winner = rowWinner()
+    if rowWinner(boards):
+        winner = rowWinner(boards)
         return True
-    elif columnWinner():
-        winner = columnWinner()
+    elif columnWinner(boards):
+        winner = columnWinner(boards)
         return True
-    elif diagonalWinner():
-        winner = diagonalWinner()
+    elif diagonalWinner(boards):
+        winner = diagonalWinner(boards)
         return True
     else:
         winner = None
 
-def rowWinner():
+def rowWinner(boards):
     for n in range(0, 7, 3):
-        if board[n] == board[n+1] == board[n+2] != "-":
+        if boards[n] == boards[n+1] == boards[n+2] != "-":
             return board[n]
 
-def columnWinner():
+def columnWinner(boards):
     for n in range(0, 3):
-        if board[n] == board[n+3] == board[n+6] != "-":
-            return board[n]
+        if boards[n] == boards[n+3] == boards[n+6] != "-":
+            return boards[n]
 
-def diagonalWinner():
+def diagonalWinner(boards):
     for n in range(0, 1):
-        if board[n] == board[n+4] == board[n+8] != "-":
-            return board[n]
-        elif board[n+2] == board[n+4] == board[n+6] != "-":
-            return board[n]
+        if boards[n] == boards[n+4] == boards[n+8] != "-":
+            return boards[n]
+        elif boards[n+2] == boards[n+4] == boards[n+6] != "-":
+            return boards[n]
 
-playGame()
+def computerMove():
+    possibleMoves = [x for x, value in enumerate(board) if value == "-" and x!=0]
+    move = 0
+
+    for x in ['X', 'O']:
+        for i in possibleMoves:
+            boardCopy = board[:]
+            boardCopy[i] = x
+            if checkGameOver(boardCopy):
+                move = i
+                return move
+    cornersOpen = []
+    for i in possibleMoves:
+        if i in [0, 2, 6, 8]:
+            cornersOpen.append(i)
+    if len(cornersOpen) > 0:
+        move = rd.choice(cornersOpen)
+        return move
+    
+    if 4 in possibleMoves:
+        move = 4
+        return move
+    
+    edgesOpen = []
+    for i in possibleMoves:
+        if i in [0, 2, 6, 8]:
+            edges.append(i)
+    if len(edgesOpen) > 0:
+        move = rd.choice(edgesOpen)
+    
+    return move
+
+if __name__ == "__main__":
+    playGame()
