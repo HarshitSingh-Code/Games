@@ -73,6 +73,7 @@ def playGame():
             print("Game Over :)")
             print(f'Its a Tie !')
             print()
+            break
         num += 1
 
 def checkGameOver(boards):
