@@ -115,7 +115,7 @@ def computerMove():
     possibleMoves = [x for x, value in enumerate(board) if value == "-" and x!=0]
     move = 0
 
-    for x in ['X', 'O']:
+    for x in ['O', 'X']:
         for i in possibleMoves:
             boardCopy = board[:]
             boardCopy[i] = x
