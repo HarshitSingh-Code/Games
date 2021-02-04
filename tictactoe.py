@@ -48,6 +48,7 @@ def playGame():
                 board[computerMove()] = currentPlayer(num)
                 while board[computerMove()] != "-":
                     board[computerMove()] = currentPlayer(num)
+                print("Computer's Turn")
                 print()
         elif toPlay.capitalize() == "N":
             print(f'Current Player is "{currentPlayer(num)}"')
