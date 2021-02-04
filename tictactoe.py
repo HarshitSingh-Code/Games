@@ -125,6 +125,11 @@ def computerMove():
             if checkGameOver(boardCopy):
                 move = i
                 return move
+    
+    if 4 in possibleMoves:
+        move = 4
+        return move
+    
     cornersOpen = []
     for i in possibleMoves:
         if i in [0, 2, 6, 8]:
@@ -133,9 +138,6 @@ def computerMove():
         move = rd.choice(cornersOpen)
         return move
     
-    if 4 in possibleMoves:
-        move = 4
-        return move
     
     edgesOpen = []
     for i in possibleMoves:
